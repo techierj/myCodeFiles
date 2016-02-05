@@ -27,21 +27,20 @@ public class MarioAndFibonacci {
 
         long sum = 0;
         for (int i = 0; i < m; i++) {
-            check[i]=in.readLong();
+            check[i] = in.readLong();
         }
         Arrays.sort(check);
-        int i=0,j=0;
-        for (i = 0, j = 0;j<n && i < m;j++) {
-            if (check[i] != arr[j]) {
-                sum += arr[j];
-                //out.println(arr[j]);
-            }else{
+        int i = 0, j = 0;
+        for (i = 0, j = 0; j < n && i < m; j++) {
+            if (check[i] == arr[j]) {
+                arr[j] = 0;
                 ++i;
+                //out.println(arr[j]);
             }
-            
         }
-        for(;i<n;i++){
-            sum+=arr[i];
+        for (i = 0; i < n; i++) {
+            sum += arr[i];
+            //out.println(arr[i]);
         }
         out.println(sum);
         out.flush();
