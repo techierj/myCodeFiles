@@ -7,6 +7,7 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 /**
  *
@@ -28,7 +29,9 @@ public class MarioAndFibonacci {
         for (int i = 0; i < m; i++) {
             check[i]=in.readLong();
         }
-        for (int i = 0, j = 0; i < m;j++) {
+        Arrays.sort(check);
+        int i=0,j=0;
+        for (i = 0, j = 0;j<n && i < m;j++) {
             if (check[i] != arr[j]) {
                 sum += arr[j];
                 //out.println(arr[j]);
@@ -36,6 +39,9 @@ public class MarioAndFibonacci {
                 ++i;
             }
             
+        }
+        for(;i<n;i++){
+            sum+=arr[i];
         }
         out.println(sum);
         out.flush();
