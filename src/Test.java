@@ -1,7 +1,12 @@
 
-import java.io.*;
-import java.util.*;
-import java.util.Map.Entry;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeMap;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,17 +19,153 @@ import java.util.Map.Entry;
  */
 public class Test {
 
+    class B{
+        String name = "hi";
+        String getData(){
+            return "Hi";
+        }
+    }
+    
+    static class C{
+        static String getData(){
+            return "Hi2";
+        }
+    }
+    
+    public static String CeasarCypher(String input, int key) {
+        int len = input.length();
+        String ans="";
+        
+        for(int i=0;i<len;i++){
+            int c = input.charAt(i);
+            if(c>='a' && c<='z'){
+                int dec = (c+key);
+                if(dec>122){
+                ans+=(char)(((c+key)%122)+96);
+                }else{
+                    ans+=(char)dec;
+                }
+            }else if(c>='A' && c<='Z'){
+                int dec = (c+key);
+                if(dec>90){
+                ans+=(char)(((c+key)%90)+64);
+                }else{
+                    ans+=(char)dec;
+                }
+            }else{
+                ans+=(char)c;
+            }
+        }
+        return ans;
+    }
+
+    
     public static void main(String[] args) throws IOException, InterruptedException {
-        InputReader in = new InputReader(System.in);
-        PrintWriter out = new PrintWriter(System.out);
+        
+        System.out.println(CeasarCypher("Zwddg ogjdv!", 8));
+        
+        Test obj2 = new Test();
+        Test.B obj = obj2.new B();
+        
+        
+        
+        Test o = new Test();
+        o.sampleMap();
+        
+        String s;
+        int a;
+        s = "Foolish boy.";
+        a = s.indexOf("Fool");
+        System.out.println(a);
+        
+        int i = 25;
+        double d = 225.50;
+        i = (int) d;
+        System.out.print(i);
+    }
+    
+    public void sampleMap(){
+        TreeMap tm = new TreeMap();
+        tm.put("a","Hello");
+        tm.put("b","Java");
+        tm.put("c","World");
+        Iterator it = tm.keySet().iterator();
+        while(it.hasNext()){
+            System.out.print(it.next());
+        }
+    }
 
-        String s = in.readString();
+    public static int[] GetBrightnessValue(int t, String input2) {
+        List<Integer> list = new ArrayList<Integer>();
 
-        CandidateCode obj = new CandidateCode();
-        out.print(obj.constructTree(s));
+        //removing brackets
+        String temp = "";
+        int len2 = input2.length();
+        for (int i = 0; i < len2; i++) {
+            if (check(input2.charAt(i))) {
+                continue;
+            }
+            temp += input2.charAt(i);
+        }
+        //end of removing brc
 
-        out.flush();
-        out.close();
+        String[] s = temp.split(",");
+
+        int i = 0, len = s.length;
+        while (t-- > 0) {
+            while (i < len) {
+                int n = Integer.parseInt(s[i]);
+                int[] arr = new int[n];
+                int avg = 0;
+                int k = n, j = 0;
+                ++i;
+                while (k-- > 0) {
+                    arr[j] = Integer.parseInt(s[i]);
+                    avg+=arr[j];
+                    ++j;
+                    ++i;
+                }
+                avg/=n;
+                Arrays.sort(arr);
+                int half = n >> 2;
+                int f = 0, sec = 0;
+                for (j = 0; j < half; j++) {
+                    f += arr[j] + arr[n - 1 - j];
+
+                    sec += arr[j + 1] + arr[n - 2 - j];
+                }
+                int ans = 0;
+                if (n % 4 == 2) {
+                    ans = (Math.max(f, sec) + arr[(half << 1) + 1] + arr[(half << 1)]);
+                } else if (n % 4 == 1) {
+                    ans = (Math.max(f, sec) + arr[(half << 1)]);
+                } else if (n % 4 == 3) {
+                    ans = (Math.max(f, sec) + arr[(half << 1) + 2] + arr[(half << 1) + 1] + arr[(half << 1)]);
+                } else {
+                    ans = (Math.max(f, sec));
+                }
+                if(ans<avg){
+                    list.add(0);
+                }else{
+                    list.add(ans);
+                }
+            }
+        }
+
+        // after processing each testcase
+        len = list.size();
+        int[] arr = new int[len];
+        for (i = 0; i < len; i++) {
+            arr[i] = list.remove(0);
+        }
+        return arr;
+    }
+
+    static boolean check(char c) {
+        if (c == '(' || c == ')' || c == '{' || c == '}') {
+            return true;
+        }
+        return false;
     }
 
     static final class InputReader {
@@ -113,57 +254,4 @@ public class Test {
             return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == -1;
         }
     }
-}
-
-class CandidateCode {
-
-    public static String constructTree(String input1) {
-        int len = input1.length();
-
-        Map<Character, Integer> hm = new HashMap<Character, Integer>();
-        int totalChar = 0;
-        for (int i = 0; i < len; i++) {
-            if (hm.containsKey(input1.charAt(i))) {
-                hm.put(input1.charAt(i), hm.get(input1.charAt(i)) +1);
-            } else {
-                hm.put(input1.charAt(i), 0);
-                ++totalChar;
-            }
-        }
-
-        Set<Entry<Character, Integer>> set = hm.entrySet();
-        List<Entry<Character, Integer>> list = new ArrayList<Entry<Character, Integer>>(set);
-        Collections.sort(list, new Comparator<Map.Entry<Character, Integer>>() {
-            public int compare(Map.Entry<Character, Integer> o1, Map.Entry<Character, Integer> o2) {
-                if (o2.getValue() != o1.getValue()) {
-                    return (o2.getValue()).compareTo(o1.getValue());
-                }
-
-                return o1.getKey().compareTo(o2.getKey());
-            }
-        });
-
-        Map<Character,String> encode = new HashMap<Character,String>();
-        String temp = "";
-        int i=1;
-        for (Map.Entry<Character, Integer> entry : list) {
-            if(i==totalChar){
-                encode.put(entry.getKey(), temp);
-                //System.out.println(entry.getKey()+" = "+temp);
-            }else{
-                encode.put(entry.getKey(), temp+"0");
-                //System.out.println(entry.getKey()+" = "+temp+"0");
-            }
-            temp+="1";
-            ++i;
-        }
-        
-        String output = "";
-        for(i=0;i<len;i++){
-            output += encode.get(input1.charAt(i));
-        }
-        //System.out.println(output);
-        return output;
-    }
-
 }

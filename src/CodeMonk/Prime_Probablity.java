@@ -8,6 +8,9 @@ package CodeMonk;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,50 +19,56 @@ import java.io.InputStreamReader;
 public class Prime_Probablity {
     public static boolean[] prime = new boolean[1000002];
     
-    public static void main(String[] args) throws IOException{
-        new Prime_Probablity().findPrime(1000001);
-        
-        /*for(int i =2;i<1000000;i++){
-            if(prime[i]==true){
-                System.out.print(i+" ");
-            }
-        }*/
-        
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        
-        int[] total = new int[1000002];
-        int j = 0;
-        for(int i =0;i<=1000000;i++){
-            if(prime[i]==true){
-                ++j;
-            }
-            total[i]=j;
-        }
-        prime = null;
-        for(int i=0;i<=12;i++){
-            System.out.print(i+"->"+total[i]+" ");
-        }
-        System.out.println("---");
-        int t = Integer.parseInt(br.readLine());
-        
-        while(t-->0){
-            String line[] = br.readLine().split(" ");
+    public static void main(String[] args){
+        try {
+            new Prime_Probablity().findPrime(1000001);
             
-            int a = Integer.parseInt(line[0]);
-            int b = Integer.parseInt(line[1]);
-            double count = 0;
-            if(total[a-1]<total[a] || total[b-1]<total[b]){
-                count = total[b]-total[a]+1;
-            }else{
-                count = total[b]-total[a];
+            /*for(int i =2;i<1000000;i++){
+            if(prime[i]==true){
+            System.out.print(i+" ");
             }
-            if(count<0) count*=-1;
-            double ans = count/(b-a+1);
-          // System.out.println(total[b]+" "+total[a]);
-            sb.append(String.format("%.6f", ans)+"\n");
+            }*/
+            
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            PrintWriter out = new PrintWriter(System.out);
+            
+            long[] total = new long[1000002];
+            long j = 0;
+            for(int i =0;i<=1000000;i++){
+                if(prime[i]==true){
+                    ++j;
+                }
+                total[i]=j;
+            }
+            prime = null;
+//        for(int i=0;i<=12;i++){
+//            System.out.print(i+"->"+total[i]+" ");
+//        }
+//        System.out.println("---");
+            int t = Integer.parseInt(br.readLine());
+            
+            while(t-->0){
+                String line[] = br.readLine().split(" ");
+                
+                int a = Integer.parseInt(line[0]);
+                int b = Integer.parseInt(line[1]);
+                double count = 0;
+                if(total[a-1]<total[a] || total[b-1]<total[b]){
+                    count = total[b]-total[a]+1;
+                }else{
+                    count = total[b]-total[a];
+                }
+                if(count<0) count*=-1;
+                double ans = count/(b-a+1);
+                // System.out.println(total[b]+" "+total[a]);
+                out.println(String.format("%.6f", ans));
+            }
+            out.flush();
+            out.close();
+            br.close();
+        } catch (IOException ex) {
+            
         }
-        System.out.print(sb);
     }
     
     
